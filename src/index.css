@@ -1,0 +1,427 @@
+/* ======================================================
+   ANTIGRAVITY – Cinematic Fullscreen Showcase
+   ====================================================== */
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+  background: #111;
+}
+
+/* ---------- App ---------- */
+.app {
+  position: relative;
+  width: 100%;
+}
+
+/* ---------- Scroll Sentinels ---------- */
+.sections {
+  position: relative;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.scroll-section {
+  height: 100vh;
+  width: 100%;
+}
+
+/* ---------- Scroll Indicator ---------- */
+.scroll-indicator {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 30;
+  animation: pulse 2.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.scroll-indicator__text {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.scroll-indicator__line {
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.35), transparent);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-indicator__line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: #fff;
+  border-radius: 3px;
+  animation: scroll-dot 2s ease-in-out infinite;
+}
+
+@keyframes scroll-dot {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(27px);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   BACKGROUND – Fixed fullscreen
+   ============================================ */
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.background__gradient {
+  position: absolute;
+  inset: 0;
+  transition: background 1s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: background;
+}
+
+.background__glow {
+  position: absolute;
+  inset: -40%;
+  transition: background 1.2s ease;
+  pointer-events: none;
+}
+
+.background__text-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.background__fruit-name {
+  font-size: clamp(4.5rem, 22vw, 26rem);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #fff;
+  text-transform: uppercase;
+  line-height: 0.85;
+  user-select: none;
+  white-space: nowrap;
+  transition:
+    opacity 0.7s cubic-bezier(0.76, 0, 0.24, 1),
+    filter 0.7s cubic-bezier(0.76, 0, 0.24, 1),
+    transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: opacity, filter, transform;
+}
+
+/* ============================================
+   STAGE – Fixed fullscreen immersive arena
+   ============================================ */
+.stage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ---------- Object Layers ---------- */
+/* 
+   All objects are absolutely positioned within the stage.
+   No wrapper boxes. No background. Pure transparent PNG.
+   Bottom-aligned to create a grounded composition.
+*/
+
+.stage__bottle,
+.stage__glass,
+.stage__fruit-full,
+.stage__fruit-half {
+  position: absolute;
+  will-change: transform, opacity;
+  background: none;
+  /* NO white backgrounds */
+}
+
+.stage__bottle img,
+.stage__glass img,
+.stage__fruit-full img,
+.stage__fruit-half img {
+  display: block;
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  background: none;
+  /* Ensure pure transparent PNG */
+  pointer-events: none;
+}
+
+/* --- Bottle: center-left, dominant --- */
+.stage__bottle {
+  height: 65vh;
+  bottom: 12vh;
+  left: 32%;
+  transform-origin: center bottom;
+  transform: translateX(-50%);
+  z-index: 2;
+  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.5));
+}
+
+/* --- Glass: slightly right --- */
+.stage__glass {
+  height: 45vh;
+  bottom: 12vh;
+  left: 62%;
+  transform-origin: center bottom;
+  transform: translateX(-50%);
+  z-index: 3;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
+}
+
+/* --- Whole fruit: bottom-left, overlapping bottle --- */
+.stage__fruit-full {
+  height: 28vh;
+  bottom: 10vh;
+  left: 22%;
+  transform-origin: center bottom;
+  transform: translateX(-50%);
+  z-index: 1;
+  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.4));
+}
+
+/* --- Half fruit: bottom-right near glass --- */
+.stage__fruit-half {
+  height: 24vh;
+  bottom: 10vh;
+  left: 52%;
+  transform-origin: center center;
+  z-index: 1;
+  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.35));
+}
+
+/* ---------- Splash Effect – behind glass (z-index 0) ---------- */
+.stage__splash {
+  position: absolute;
+  bottom: 18vh;
+  left: 58%;
+  width: 30vw;
+  height: 30vw;
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.stage__splash-burst {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.1) 30%,
+      transparent 65%);
+  filter: blur(12px);
+  animation: splash-pulse 3s ease-in-out infinite;
+}
+
+@keyframes splash-pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 0.65;
+  }
+}
+
+/* ---------- Floating Idle Animations ---------- */
+.stage__float {
+  animation: float-y 4s ease-in-out infinite;
+}
+
+.stage__float-alt {
+  animation: float-y-alt 3.5s ease-in-out infinite;
+}
+
+.stage__float-slow {
+  animation: float-y-slow 5s ease-in-out infinite;
+}
+
+@keyframes float-y {
+
+  0%,
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(-50%, -10px, 0);
+  }
+}
+
+@keyframes float-y-alt {
+
+  0%,
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(-50%, -7px, 0);
+  }
+}
+
+@keyframes float-y-slow {
+
+  0%,
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(-50%, -12px, 0);
+  }
+}
+
+/* ---------- Tagline – bottom center ---------- */
+.stage__tagline {
+  position: absolute;
+  bottom: 3vh;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  will-change: opacity, transform;
+  z-index: 5;
+}
+
+.stage__tagline-text {
+  font-size: clamp(0.85rem, 1.8vw, 1.3rem);
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+.stage__tagline-line {
+  width: 40px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.25);
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .stage__bottle {
+    height: 55vh;
+    left: 30%;
+    bottom: 14vh;
+  }
+
+  .stage__glass {
+    height: 38vh;
+    left: 65%;
+    bottom: 14vh;
+  }
+
+  .stage__fruit-full {
+    height: 22vh;
+    left: 18%;
+    bottom: 12vh;
+  }
+
+  .stage__fruit-half {
+    height: 20vh;
+    left: 50%;
+    bottom: 12vh;
+  }
+
+  .background__fruit-name {
+    font-size: clamp(2.5rem, 26vw, 10rem);
+  }
+
+  .stage__tagline-text {
+    font-size: 0.8rem;
+    padding: 0 1rem;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 480px) {
+  .stage__bottle {
+    height: 48vh;
+    left: 28%;
+    bottom: 16vh;
+  }
+
+  .stage__glass {
+    height: 32vh;
+    left: 68%;
+    bottom: 16vh;
+  }
+
+  .stage__fruit-full {
+    height: 18vh;
+    left: 14%;
+    bottom: 14vh;
+  }
+
+  .stage__fruit-half {
+    height: 16vh;
+    left: 48%;
+    bottom: 14vh;
+  }
+}
