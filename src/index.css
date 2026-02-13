@@ -128,30 +128,43 @@ body {
 
 .background__glow {
   position: absolute;
-  inset: -40%;
+  /* Glow behind the bottle cluster */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 80vh;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
   transition: background 1.2s ease;
   pointer-events: none;
+  filter: blur(60px);
 }
 
 .background__text-container {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  /* Align closer to top */
+  padding-top: 10vh;
+  /* Position text behind bottle head */
   justify-content: center;
   pointer-events: none;
   overflow: hidden;
 }
 
 .background__fruit-name {
-  font-size: clamp(4.5rem, 22vw, 26rem);
+  font-size: clamp(6rem, 24vw, 24rem);
+  /* Huge text */
   font-weight: 900;
-  letter-spacing: 0.05em;
+  letter-spacing: -0.02em;
   color: #fff;
   text-transform: uppercase;
-  line-height: 0.85;
+  line-height: 0.8;
   user-select: none;
   white-space: nowrap;
+  opacity: 0.15;
+  /* Slightly more visible */
   transition:
     opacity 0.7s cubic-bezier(0.76, 0, 0.24, 1),
     filter 0.7s cubic-bezier(0.76, 0, 0.24, 1),
@@ -170,258 +183,217 @@ body {
   overflow: hidden;
   z-index: 10;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 
+   THE ARENA: A central container to hold the composition 
+   This ensures the Tight Triangle Cluster stays perfect at any aspect ratio.
+*/
+.stage__arena {
+  position: relative;
+  width: clamp(350px, 80vw, 1000px);
+  height: clamp(500px, 85vh, 1200px);
+  /* Boundary visualizer for debug only: border: 1px solid red; */
 }
 
 /* ---------- Object Layers ---------- */
 /* 
-   All objects are absolutely positioned within the stage.
-   No wrapper boxes. No background. Pure transparent PNG.
-   Bottom-aligned to create a grounded composition.
+   Reference Composition:
+   - Bottle: Center, Huge.
+   - Glass: Right of center, overlapping bottle.
+   - Whole Fruit: Left of center, overlapping bottle.
+   - Half Fruit: Front Right, overlapping glass/bottle.
 */
 
-.stage__bottle,
-.stage__glass,
-.stage__fruit-full,
-.stage__fruit-half {
+.stage__object {
   position: absolute;
   will-change: transform, opacity;
   background: none;
-  /* NO white backgrounds */
 }
 
-.stage__bottle img,
-.stage__glass img,
-.stage__fruit-full img,
-.stage__fruit-half img {
+.stage__object img {
   display: block;
   height: 100%;
-  width: auto;
+  width: 100%;
   object-fit: contain;
   background: none;
-  /* Ensure pure transparent PNG */
   pointer-events: none;
+  /* Dramatic shadows for depth */
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.3));
 }
 
-/* --- Bottle: center-left, dominant --- */
+/* --- Bottle: The Hero Tower --- */
+/* Center aligned, largest */
 .stage__bottle {
-  height: 65vh;
-  bottom: 12vh;
-  left: 32%;
-  transform-origin: center bottom;
-  transform: translateX(-50%);
+  width: 44%;
+  /* Controlled width relative to arena */
+  height: 80%;
+  /* Tall */
+  left: 50%;
+  /* Center */
+  bottom: 12%;
+  /* Base */
+  margin-left: -22%;
+  /* True Centering (width/2) */
   z-index: 2;
-  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.5));
+  /* Middle layer */
 }
 
-/* --- Glass: slightly right --- */
+.stage__bottle img {
+  filter: drop-shadow(0 40px 60px rgba(0, 0, 0, 0.4));
+}
+
+/* --- Glass: The Sidekick --- */
+/* To the right, slightly forward */
 .stage__glass {
-  height: 45vh;
-  bottom: 12vh;
-  left: 62%;
-  transform-origin: center bottom;
-  transform: translateX(-50%);
+  width: 32%;
+  height: 52%;
+  right: 18%;
+  /* Positioned from right side of arena */
+  bottom: 8%;
   z-index: 3;
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
+  /* In front of bottle */
 }
 
-/* --- Whole fruit: bottom-left, overlapping bottle --- */
+.stage__glass img {
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.35));
+}
+
+/* --- Whole Fruit: The Anchor --- */
+/* To the left, slightly behind glass visual plane, but in front of bottle */
 .stage__fruit-full {
-  height: 28vh;
-  bottom: 10vh;
-  left: 22%;
-  transform-origin: center bottom;
-  transform: translateX(-50%);
-  z-index: 1;
-  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.4));
+  width: 30%;
+  height: 30%;
+  left: 10%;
+  /* Positioned from left */
+  bottom: 8%;
+  z-index: 4;
+  /* High z-index to pop */
 }
 
-/* --- Half fruit: bottom-right near glass --- */
+.stage__fruit-full img {
+  object-position: bottom center;
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.3));
+}
+
+/* --- Half Fruit: The Garnish --- */
+/* Front and center-right */
 .stage__fruit-half {
-  height: 24vh;
-  bottom: 10vh;
-  left: 52%;
-  transform-origin: center center;
-  z-index: 1;
-  filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.35));
+  width: 24%;
+  height: 24%;
+  right: 25%;
+  /* Overlaps glass and bottle */
+  bottom: 4%;
+  /* Lowest point (closest to camera) */
+  z-index: 5;
+  /* Topmost */
 }
 
-/* ---------- Splash Effect – behind glass (z-index 0) ---------- */
+.stage__fruit-half img {
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.3));
+}
+
+
+/* ---------- Splash Effect – behind everything (z-index 0) ---------- */
 .stage__splash {
   position: absolute;
-  bottom: 18vh;
-  left: 58%;
-  width: 30vw;
-  height: 30vw;
+  bottom: 20%;
+  left: 50%;
+  width: 60%;
+  height: 50%;
   transform: translateX(-50%);
-  z-index: 0;
+  z-index: 1;
+  /* Behind bottle */
   pointer-events: none;
   will-change: transform, opacity;
+  mix-blend-mode: overlay;
+  /* Blends nicely with gradient */
 }
 
 .stage__splash-burst {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at center,
-      rgba(255, 255, 255, 0.25) 0%,
-      rgba(255, 255, 255, 0.1) 30%,
-      transparent 65%);
-  filter: blur(12px);
-  animation: splash-pulse 3s ease-in-out infinite;
+  background: radial-gradient(circle at center,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.1) 40%,
+      transparent 70%);
+  filter: blur(20px);
+  animation: splash-pulse 4s ease-in-out infinite;
 }
 
-@keyframes splash-pulse {
-
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.4;
-  }
-
-  50% {
-    transform: scale(1.2);
-    opacity: 0.65;
-  }
-}
-
-/* ---------- Floating Idle Animations ---------- */
-.stage__float {
-  animation: float-y 4s ease-in-out infinite;
-}
-
-.stage__float-alt {
-  animation: float-y-alt 3.5s ease-in-out infinite;
-}
-
-.stage__float-slow {
-  animation: float-y-slow 5s ease-in-out infinite;
-}
-
-@keyframes float-y {
-
-  0%,
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
-
-  50% {
-    transform: translate3d(-50%, -10px, 0);
-  }
-}
-
-@keyframes float-y-alt {
-
-  0%,
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
-
-  50% {
-    transform: translate3d(-50%, -7px, 0);
-  }
-}
-
-@keyframes float-y-slow {
-
-  0%,
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
-
-  50% {
-    transform: translate3d(-50%, -12px, 0);
-  }
-}
-
-/* ---------- Tagline – bottom center ---------- */
+/* ---------- Tagline ---------- */
 .stage__tagline {
   position: absolute;
-  bottom: 3vh;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 0%;
+  left: 0;
+  width: 100%;
   text-align: center;
-  will-change: opacity, transform;
-  z-index: 5;
+  z-index: 10;
 }
 
 .stage__tagline-text {
-  font-size: clamp(0.85rem, 1.8vw, 1.3rem);
+  font-size: clamp(0.9rem, 2vw, 1.4rem);
   font-weight: 300;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.85);
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-  white-space: nowrap;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
 }
 
 .stage__tagline-line {
-  width: 40px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.25);
-  margin: 0.5rem auto 0;
-  border-radius: 2px;
+  width: 60px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.4);
+  margin: 1rem auto 0;
 }
 
 /* ============================================
-   RESPONSIVE
+   RESPONSIVE ADJUSTMENTS for Mobile
    ============================================ */
 @media (max-width: 768px) {
-  .stage__bottle {
-    height: 55vh;
-    left: 30%;
-    bottom: 14vh;
-  }
-
-  .stage__glass {
-    height: 38vh;
-    left: 65%;
-    bottom: 14vh;
-  }
-
-  .stage__fruit-full {
-    height: 22vh;
-    left: 18%;
-    bottom: 12vh;
-  }
-
-  .stage__fruit-half {
-    height: 20vh;
-    left: 50%;
-    bottom: 12vh;
+  .stage__arena {
+    width: 95vw;
+    height: 65vh;
   }
 
   .background__fruit-name {
-    font-size: clamp(2.5rem, 26vw, 10rem);
+    font-size: 18vw;
+    padding-top: 15vh;
   }
 
-  .stage__tagline-text {
-    font-size: 0.8rem;
-    padding: 0 1rem;
-    white-space: normal;
-  }
-}
-
-@media (max-width: 480px) {
+  /* Tighter cluster on mobile */
   .stage__bottle {
-    height: 48vh;
-    left: 28%;
-    bottom: 16vh;
+    width: 55%;
+    height: 75%;
+    bottom: 15%;
+    margin-left: -27.5%;
   }
 
   .stage__glass {
-    height: 32vh;
-    left: 68%;
-    bottom: 16vh;
+    width: 40%;
+    height: 45%;
+    right: 5%;
+    bottom: 12%;
   }
 
   .stage__fruit-full {
-    height: 18vh;
-    left: 14%;
-    bottom: 14vh;
+    width: 35%;
+    height: 28%;
+    left: 0%;
+    bottom: 12%;
   }
 
   .stage__fruit-half {
-    height: 16vh;
-    left: 48%;
-    bottom: 14vh;
+    width: 30%;
+    height: 22%;
+    right: 15%;
+    bottom: 8%;
+  }
+
+  .stage__tagline {
+    bottom: 5%;
   }
 }
