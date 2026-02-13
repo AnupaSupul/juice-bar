@@ -145,23 +145,38 @@ body {
   inset: 0;
   display: flex;
   align-items: flex-start;
-  /* Align to top to sit behind bottle head */
-  padding-top: 12vh;
+  padding-top: 10vh;
+  /* Position slightly higher */
   justify-content: center;
   pointer-events: none;
   overflow: hidden;
 }
 
+/* 3D TEXT EFFECT - Refined & Translucent White */
 .background__fruit-name {
-  font-size: clamp(6rem, 24vw, 24rem);
+  font-size: 25vw;
+  /* Adjusted to fit better but still huge */
   font-weight: 900;
-  letter-spacing: -0.02em;
-  color: #fff;
-  text-transform: uppercase;
+  letter-spacing: -0.04em;
   line-height: 0.8;
+  color: rgba(255, 255, 255, 0.25);
+  /* Little white fill */
+  text-transform: uppercase;
   user-select: none;
   white-space: nowrap;
-  opacity: 0.15;
+
+  /* 3D Extrusion Effect - Clean & Sharp */
+  text-shadow:
+    1px 1px 0 rgba(255, 255, 255, 0.1),
+    2px 2px 0 rgba(255, 255, 255, 0.08),
+    3px 3px 0 rgba(255, 255, 255, 0.06),
+    4px 4px 0 rgba(255, 255, 255, 0.04),
+    5px 5px 0 rgba(255, 255, 255, 0.02),
+    0 10px 30px rgba(0, 0, 0, 0.15);
+
+  /* Removed mix-blend-mode for cleaner white */
+  opacity: 1;
+
   transition:
     opacity 0.7s cubic-bezier(0.76, 0, 0.24, 1),
     filter 0.7s cubic-bezier(0.76, 0, 0.24, 1),
@@ -197,15 +212,13 @@ body {
   object-fit: contain;
   background: none !important;
   filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.4));
-  /* Stronger shadow for depth */
 }
 
 /* --- Bottle ---
-   Center: 42% (Slightly left of dead center to allow glass overlap)
+   Center: 42%
 */
 .stage__bottle {
   height: 68vh;
-  /* Slightly larger */
   bottom: 8vh;
   left: 42%;
   transform: translateX(-50%);
@@ -214,7 +227,7 @@ body {
 }
 
 /* --- Glass ---
-   Right: 58% (Overlaps bottle significantly)
+   Right: 58%
 */
 .stage__glass {
   height: 48vh;
@@ -226,7 +239,7 @@ body {
 }
 
 /* --- Whole Fruit ---
-   Left: 20% (Anchoring Left)
+   Left: 20%
 */
 .stage__fruit-full {
   height: 30vh;
@@ -237,7 +250,7 @@ body {
 }
 
 /* --- Half Fruit ---
-   Front Right: 68% (Overlaps Glass/Bottle Base)
+   Front Right: 68%
 */
 .stage__fruit-half {
   height: 25vh;
@@ -407,5 +420,11 @@ body {
     height: 18vh;
     left: 75%;
     bottom: 10vh;
+  }
+
+  .background__fruit-name {
+    font-size: 80vw;
+    /* Even bigger on mobile to crop nicely */
+    padding-top: 15vh;
   }
 }
