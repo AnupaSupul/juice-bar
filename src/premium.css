@@ -1,0 +1,62 @@
+/* ============================================
+   LENIS SMOOTH SCROLL
+   ============================================ */
+html.lenis {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+    pointer-events: none;
+}
+
+/* ============================================
+   PRELOADER
+   ============================================ */
+.preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.preloader__content {
+    text-align: center;
+    color: #fff;
+}
+
+.preloader__logo {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: min(15vw, 6rem);
+    text-transform: uppercase;
+    margin: 0;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.preloader__text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    margin-top: 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+}

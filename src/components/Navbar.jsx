@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import gsap from 'gsap';
 import { fruits } from '../antigravity/config';
 
 export default function Navbar({ activeIndex }) {
@@ -18,6 +19,20 @@ export default function Navbar({ activeIndex }) {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    // Magnetic Hover Effect
+    const magnetic = (e) => {
+        const { clientX, clientY, currentTarget } = e;
+        const { left, top, width, height } = currentTarget.getBoundingClientRect();
+        const x = clientX - (left + width / 2);
+        const y = clientY - (top + height / 2);
+
+        gsap.to(currentTarget, { x: x * 0.2, y: y * 0.2, duration: 0.5, ease: 'power3.out' });
+    };
+
+    const resetMagnetic = (e) => {
+        gsap.to(e.currentTarget, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+    };
+
     return (
         <>
             <nav
@@ -31,9 +46,9 @@ export default function Navbar({ activeIndex }) {
 
                 {/* CENTER: NAV LINKS */}
                 <div className="navbar__center">
-                    <a href="#" className="nav-item">Home</a>
+                    <a href="#" className="nav-item" onMouseMove={magnetic} onMouseLeave={resetMagnetic}>Home</a>
 
-                    <div className="nav-item has-dropdown">
+                    <div className="nav-item has-dropdown" onMouseMove={magnetic} onMouseLeave={resetMagnetic}>
                         <span>Flavors</span>
                         <div className="nav-dropdown">
                             {fruits.map((fruit, i) => (
@@ -48,14 +63,14 @@ export default function Navbar({ activeIndex }) {
                         </div>
                     </div>
 
-                    <a href="#" className="nav-item">Products</a>
-                    <a href="#" className="nav-item">Benefits</a>
-                    <a href="#section-contact" className="nav-item">Contact</a>
+                    <a href="#" className="nav-item" onMouseMove={magnetic} onMouseLeave={resetMagnetic}>Products</a>
+                    <a href="#" className="nav-item" onMouseMove={magnetic} onMouseLeave={resetMagnetic}>Benefits</a>
+                    <a href="#section-contact" className="nav-item" onMouseMove={magnetic} onMouseLeave={resetMagnetic}>Contact</a>
                 </div>
 
                 {/* RIGHT: BUY & TOGGLE */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <button className="btn-buy">
+                    <button className="btn-buy" onMouseMove={magnetic} onMouseLeave={resetMagnetic}>
                         Buy Now
                     </button>
 

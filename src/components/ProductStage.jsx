@@ -1,3 +1,5 @@
+import { useRef, useEffect } from 'react';
+import gsap from 'gsap';
 import { timeline, exitDuration } from '../antigravity/config';
 
 /**
@@ -6,6 +8,70 @@ import { timeline, exitDuration } from '../antigravity/config';
  */
 export default function ProductStage({ fruit, phase }) {
     const { assets } = fruit;
+
+    // Parallax Refs
+    const bottleRef = useRef(null);
+    const glassRef = useRef(null);
+    const fullRef = useRef(null);
+    const halfRef = useRef(null);
+
+    // Mouse Parallax Logic
+    useEffect(() => {
+        if (!bottleRef.current || !glassRef.current) return;
+
+        // Setup quickTo for performance (avoid garbage collection issues)
+        const bottleTo = {
+            x: gsap.quickTo(bottleRef.current, "x", { duration: 0.5, ease: "power3.out" }),
+            y: gsap.quickTo(bottleRef.current, "y", { duration: 0.5, ease: "power3.out" }),
+            r: gsap.quickTo(bottleRef.current, "rotation", { duration: 0.5, ease: "power3.out" }),
+        };
+        const glassTo = {
+            x: gsap.quickTo(glassRef.current, "x", { duration: 0.6, ease: "power3.out" }),
+            y: gsap.quickTo(glassRef.current, "y", { duration: 0.6, ease: "power3.out" }),
+            r: gsap.quickTo(glassRef.current, "rotation", { duration: 0.6, ease: "power3.out" }),
+        };
+        const fullTo = {
+            x: gsap.quickTo(fullRef.current, "x", { duration: 0.7, ease: "power3.out" }),
+            y: gsap.quickTo(fullRef.current, "y", { duration: 0.7, ease: "power3.out" }),
+            r: gsap.quickTo(fullRef.current, "rotation", { duration: 0.7, ease: "power3.out" }),
+        };
+        const halfTo = {
+            x: gsap.quickTo(halfRef.current, "x", { duration: 0.8, ease: "power3.out" }),
+            y: gsap.quickTo(halfRef.current, "y", { duration: 0.8, ease: "power3.out" }),
+            r: gsap.quickTo(halfRef.current, "rotation", { duration: 0.8, ease: "power3.out" }),
+        };
+
+        const handleMouseMove = (e) => {
+            const { innerWidth, innerHeight } = window;
+            // Normalize -1 to 1
+            const x = (e.clientX / innerWidth) * 2 - 1;
+            const y = (e.clientY / innerHeight) * 2 - 1;
+
+            // Apply Parallax (Different speeds for depth)
+            // Bottle (Back) - Low Movement
+            bottleTo.x(x * 15);
+            bottleTo.y(y * 15);
+            bottleTo.r(x * 2);
+
+            // Glass (Mid) - Medium Movement
+            glassTo.x(x * 25);
+            glassTo.y(y * 25);
+            glassTo.r(x * 3);
+
+            // Full Fruit (Front Left) - High Movement
+            fullTo.x(x * 35);
+            fullTo.y(y * 35);
+            fullTo.r(x * 4);
+
+            // Half Fruit (Front Right) - Highest Movement
+            halfTo.x(x * 45);
+            halfTo.y(y * 45);
+            halfTo.r(x * 5);
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
 
     // --- Animation Styles Helper ---
     const getAnimatorStyle = (key, enterTransform) => {
@@ -33,7 +99,7 @@ export default function ProductStage({ fruit, phase }) {
         return {
             transform: 'translateY(0) scale(1) rotate(0deg)',
             opacity: 1,
-            transition: `transform ${tl.duration}ms cubic-bezier(0.22, 1, 0.36, 1) ${tl.delay}ms, opacity ${tl.duration}ms ease ${tl.delay}ms`,
+            transition: `transform ${tl.duration}ms cubic-bezier(0.22, 1, 0.3, 1) ${tl.delay}ms, opacity ${tl.duration}ms ease ${tl.delay}ms`,
         };
     };
 
@@ -84,7 +150,7 @@ export default function ProductStage({ fruit, phase }) {
                         className="stage__animator"
                         style={getAnimatorStyle('bottle', 'translateY(-120%)')}
                     >
-                        <img src={assets.bottle} className="stage__img" alt="Bottle" draggable={false} />
+                        <img ref={bottleRef} src={assets.bottle} className="stage__img" alt="Bottle" draggable={false} />
                     </div>
                 </div>
 
@@ -94,7 +160,7 @@ export default function ProductStage({ fruit, phase }) {
                         className="stage__animator"
                         style={getAnimatorStyle('glass', 'translateX(80%)')}
                     >
-                        <img src={assets.glass} className="stage__img" alt="Glass" draggable={false} />
+                        <img ref={glassRef} src={assets.glass} className="stage__img" alt="Glass" draggable={false} />
                     </div>
                 </div>
 
@@ -104,7 +170,7 @@ export default function ProductStage({ fruit, phase }) {
                         className="stage__animator"
                         style={getAnimatorStyle('full', 'translateY(100%)')}
                     >
-                        <img src={assets.full} className="stage__img" alt="Fruit" draggable={false} />
+                        <img ref={fullRef} src={assets.full} className="stage__img" alt="Fruit" draggable={false} />
                     </div>
                 </div>
 
@@ -114,7 +180,7 @@ export default function ProductStage({ fruit, phase }) {
                         className="stage__animator"
                         style={getAnimatorStyle('half', 'translateY(100%) rotate(-40deg)')}
                     >
-                        <img src={assets.half} className="stage__img" alt="Fruit Half" draggable={false} />
+                        <img ref={halfRef} src={assets.half} className="stage__img" alt="Fruit Half" draggable={false} />
                     </div>
                 </div>
 
