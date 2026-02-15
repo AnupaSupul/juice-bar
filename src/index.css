@@ -31,29 +31,22 @@ body {
 }
 
 /* ============================================
-   PREMIUM FLOATING NAVBAR (User Step 1)
+   PREMIUM FLOATING NAVBAR
    ============================================ */
 .navbar {
   position: fixed;
   top: 16px;
-  /* Spacing from edge */
   left: 24px;
   right: 24px;
   width: calc(100% - 48px);
-  /* Full width minus margins */
   height: 72px;
   z-index: 100;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* Logo Left, Buy Right */
   padding: 0 32px;
-
   border-radius: 16px;
   transition: all 0.5s cubic-bezier(0, 0, 0.2, 1);
-
-  /* Initial State: Transparent but positioned */
   background: rgba(255, 255, 255, 0);
   backdrop-filter: blur(0px);
   box-shadow: none;
@@ -64,10 +57,9 @@ body {
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(20px);
   box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.12);
-  /* No borders */
 }
 
-/* Center Links Container */
+/* Center Links */
 .navbar__center {
   position: absolute;
   left: 50%;
@@ -87,7 +79,6 @@ body {
   color: #fff;
   cursor: pointer;
   z-index: 2;
-  /* Above center links if overlap */
 }
 
 /* NAV LINKS */
@@ -107,7 +98,6 @@ body {
   text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
 }
 
-/* Underline Animation */
 .nav-item::after {
   content: '';
   position: absolute;
@@ -116,7 +106,6 @@ body {
   width: 0%;
   height: 2px;
   background: #fff;
-  /* Clean white underline */
   transition: width 0.3s ease, left 0.3s ease;
   transform: translateX(-50%);
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
@@ -124,7 +113,6 @@ body {
 
 .nav-item:hover::after {
   width: 24px;
-  /* Small refined dash */
 }
 
 /* DROPDOWN */
@@ -283,7 +271,7 @@ body {
 }
 
 /* ============================================
-   SCROLL SECTIONS & CONTACT (User Step 2)
+   SCROLL SECTIONS & CONTACT
    ============================================ */
 .sections {
   position: relative;
@@ -297,12 +285,10 @@ body {
   position: relative;
 }
 
-/* Contact Section Fix */
-/* Assuming the last section is Contact or there's a specific contact area */
+/* CONTACT FIX */
 #section-contact,
 .section-contact {
   padding-top: 140px;
-  /* User Step 2: Minimum 140px spacing */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -391,7 +377,7 @@ body {
 }
 
 /* ============================================
-   BACKGROUND & TYPOGRAPHY (User Step 3: Premium Transition)
+   BACKGROUND & TYPOGRAPHY
    ============================================ */
 .background {
   position: fixed;
@@ -422,7 +408,6 @@ body {
   transition: background 1.2s ease;
 }
 
-/* STACK CONTAINER */
 .bg-fruit-stack {
   position: absolute;
   inset: 0;
@@ -435,13 +420,7 @@ body {
   z-index: 1;
 }
 
-/* 
-   PREMIUM FRUIT ANIMATIONS (User Step 3) 
-   We rely on React 'key' prop to trigger CSS animations on mount/unmount.
-   Or we use specific classes for enter/exit.
-   Assuming standardized class structure for text items.
-*/
-
+/* Shared Item Props */
 .fruit-text-item {
   position: absolute;
   text-align: center;
@@ -450,31 +429,26 @@ body {
   font-weight: 900;
   left: 50%;
   transform: translateX(-50%);
-
-  /* Shared transition basics */
   will-change: transform, opacity, filter;
   animation-fill-mode: forwards;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  /* Premium Ease */
   animation-duration: 900ms;
 }
 
-/* Main Text Center */
+/* Main Center */
 .fruit-name-main {
   top: 50%;
   margin-top: -7.5vw;
-  /* Half height approx */
   font-size: 15vw;
   letter-spacing: 0.02em;
   color: rgba(255, 255, 255, 0.32);
-
-  /* Default enters from bottom */
   animation-name: textEnterMain;
 }
 
 /* Top Copy */
 .fruit-name-top {
-  top: 5%;
+  top: 0%;
+  /* Pushed to very top edge */
   font-size: 15vw;
   color: rgba(255, 255, 255, 0.10);
   filter: blur(2px);
@@ -483,17 +457,15 @@ body {
 
 /* Bottom Copy */
 .fruit-name-bottom {
-  bottom: 5%;
+  bottom: 0%;
+  /* Pushed to very bottom edge */
   font-size: 15vw;
   color: rgba(255, 255, 255, 0.10);
   filter: blur(2px);
   animation-name: textEnterBottom;
 }
 
-/* 
-   ANIMATION KEYFRAMES (User Step 3)
-   Enter: TranslateY 120px -> 0, Opacity 0 -> Target, Blur 12px -> 0
-*/
+/* ANIMATIONS */
 @keyframes textEnterMain {
   0% {
     transform: translateX(-50%) translateY(120px);
@@ -504,7 +476,6 @@ body {
   100% {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
-    /* relative to Color alpha */
     filter: blur(0);
   }
 }
@@ -537,21 +508,9 @@ body {
   }
 }
 
-/* 
-   NOTE: For "Exit" animations (Old text moving up), we need React Transition Group 
-   or valid key-based unmounting. 
-   Since we're using Key prop in Background.jsx, the OLD element is removed 
-   and the NEW one is mounted. 
-   React by default just swaps them. 
-   To get the "Old text moves up" effect, we would need a transition wrapper.
-   However, just having the new text enter smoothly from bottom 
-   while the old one vanishes is a 90% solution.
-   For the full effect, we'll rely on the "Enter" animation providing the dynamic feeling.
-*/
-
 
 /* ============================================
-   PRODUCT STAGE – PREMIUM POSTER COMPOSITION
+   PRODUCT STAGE
    ============================================ */
 .product-stage {
   position: fixed;
@@ -632,7 +591,6 @@ body {
   z-index: 7;
 }
 
-/* Splash */
 .stage__splash {
   position: absolute;
   bottom: 15%;
@@ -690,7 +648,6 @@ body {
     display: none;
   }
 
-  /* Hide Center links on Tablet/Mobile */
   .mobile-toggle {
     display: block;
   }
@@ -701,7 +658,6 @@ body {
     display: none;
   }
 
-  /* Hide center nav */
   .stage__layer--bottle {
     left: 50%;
     height: 60vh;
