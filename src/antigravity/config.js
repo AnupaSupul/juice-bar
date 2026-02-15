@@ -75,17 +75,18 @@ export const fruits = [
  * Staggered timeline delays (ms) for each object layer.
  * Updated to match user request: 900ms, 800ms, 700ms.
  */
+// Slower, more cinematic motion per "no this quick" request
 export const timeline = {
-    bottle: { delay: 0, duration: 900 },
-    glass: { delay: 100, duration: 800 },
-    full: { delay: 200, duration: 700 },
-    half: { delay: 300, duration: 700 },
-    splash: { delay: 200, duration: 800 },
-    tagline: { delay: 600, duration: 500 },
+    bottle: { delay: 0, duration: 1200 },
+    glass: { delay: 0, duration: 1200 },
+    full: { delay: 0, duration: 1200 },
+    half: { delay: 0, duration: 1200 },
+    splash: { delay: 0, duration: 1200 },
+    tagline: { delay: 200, duration: 800 }, // Tagline can still be slightly late
 };
 
 /** Exit animation total duration */
-export const exitDuration = 400;
+export const exitDuration = 50; // Slight ease-out, not instant
 
 /** Full cycle duration (exit + longest enter) */
 export const cycleDuration = exitDuration + timeline.bottle.duration; // Approximate
