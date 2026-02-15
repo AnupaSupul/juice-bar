@@ -658,6 +658,10 @@ body {
     display: none;
   }
 
+  .product-composition {
+    bottom: 12vh;
+  }
+
   .stage__layer--bottle {
     left: 50%;
     height: 60vh;
