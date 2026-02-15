@@ -73,19 +73,19 @@ export const fruits = [
 
 /**
  * Staggered timeline delays (ms) for each object layer.
- * Objects animate in sequence for a cinematic feel.
+ * Updated to match user request: 900ms, 800ms, 700ms.
  */
 export const timeline = {
-    bottle: { delay: 0, duration: 700 },
-    glass: { delay: 150, duration: 650 },
-    full: { delay: 300, duration: 600 },
-    half: { delay: 400, duration: 550 },
+    bottle: { delay: 0, duration: 900 },
+    glass: { delay: 100, duration: 800 },
+    full: { delay: 200, duration: 700 },
+    half: { delay: 300, duration: 700 },
     splash: { delay: 200, duration: 800 },
     tagline: { delay: 600, duration: 500 },
 };
 
 /** Exit animation total duration */
-export const exitDuration = 350;
+export const exitDuration = 400;
 
 /** Full cycle duration (exit + longest enter) */
-export const cycleDuration = exitDuration + timeline.tagline.delay + timeline.tagline.duration;
+export const cycleDuration = exitDuration + timeline.bottle.duration; // Approximate

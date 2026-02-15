@@ -3,6 +3,7 @@ import { fruits } from './antigravity/config';
 import { useActiveSection, useCinematicTransition } from './antigravity/index';
 import ProductStage from './components/ProductStage';
 import Background from './components/Background';
+import Navbar from './components/Navbar';
 import './index.css';
 
 export default function App() {
@@ -16,6 +17,20 @@ export default function App() {
   // Render at "from" positions on 'enter' phase, then force to 'idle'
   // so CSS transitions animate to resting positions.
   const appRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Calculate 0-1 progress relative to window height (repeating per section)
+      // This drives the subtle parallax "float" effect during scroll
+      const progress = (window.scrollY % window.innerHeight) / window.innerHeight;
+      if (appRef.current) {
+        appRef.current.style.setProperty('--scroll-p', progress.toFixed(3));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (phase === 'enter') {
@@ -33,6 +48,9 @@ export default function App() {
 
   return (
     <div className="app" ref={appRef} data-phase={phase}>
+      {/* Premium Navigation */}
+      <Navbar activeIndex={activeIndex} />
+
       {/* Fixed background – follows activeIndex instantly */}
       <Background fruit={activeFruit} phase={phase} />
 
@@ -46,6 +64,7 @@ export default function App() {
             key={fruit.id}
             ref={setRef(i)}
             className="scroll-section"
+            id={`section-${i}`}
             data-index={i}
           >
             {i === 0 && (

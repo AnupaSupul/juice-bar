@@ -1,120 +1,52 @@
 import { timeline, exitDuration } from '../antigravity/config';
 
 /**
- * ProductStage – Pure Transparent Rendering.
- * Cinematic Cluster Layout.
+ * ProductStage – Grounded Cinematic Composition
+ * Strictly aligned, no floating, no independent parallax.
  */
 export default function ProductStage({ fruit, phase }) {
     const { assets } = fruit;
 
-    // IMPORTANT: Animations must PRESERVE the base CSS transform (centering)
-    const getBottleStyle = () => {
-        const tl = timeline.bottle;
-        const base = 'translateX(-50%)';
+    // --- Animation Styles Helper ---
+    const getAnimatorStyle = (key, enterTransform) => {
+        const tl = timeline[key];
 
         if (phase === 'exit') {
+            // Exit: All shrink slightly and fade up/out
             return {
-                transform: `${base} translateY(-120%) scale(0.9)`,
+                transform: 'translateY(-30px) scale(0.95)',
                 opacity: 0,
                 transition: `transform ${exitDuration}ms cubic-bezier(0.4, 0, 1, 1), opacity ${exitDuration}ms ease`,
             };
         }
+
         if (phase === 'enter') {
+            // Enter: Start from specific requested positions
             return {
-                transform: `${base} translateY(-120%)`,
-                opacity: 0,
+                transform: enterTransform,
+                opacity: key === 'glass' ? 0 : 1, // Glass uses opacity fade
                 transition: 'none',
             };
         }
+
+        // Idle - STATIC GROUNDED (No float)
         return {
-            transform: `${base} translateY(0) scale(1)`,
+            transform: 'translateY(0) scale(1) rotate(0deg)',
             opacity: 1,
-            transition: `transform ${tl.duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${tl.delay}ms, opacity ${tl.duration * 0.7}ms ease ${tl.delay}ms`,
+            transition: `transform ${tl.duration}ms cubic-bezier(0.22, 1, 0.36, 1) ${tl.delay}ms, opacity ${tl.duration}ms ease ${tl.delay}ms`,
         };
     };
 
-    const getGlassStyle = () => {
-        const tl = timeline.glass;
-        const base = 'translateX(-50%)';
-
-        if (phase === 'exit') {
-            return {
-                transform: `${base} translateX(50%) rotate(10deg)`,
-                opacity: 0,
-                transition: `transform ${exitDuration}ms cubic-bezier(0.4, 0, 1, 1), opacity ${exitDuration}ms ease`,
-            };
-        }
-        if (phase === 'enter') {
-            return {
-                transform: `${base} translateX(50%) rotate(10deg)`,
-                opacity: 0,
-                transition: 'none',
-            };
-        }
-        return {
-            transform: `${base} translateX(0) rotate(0deg)`,
-            opacity: 1,
-            transition: `transform ${tl.duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${tl.delay}ms, opacity ${tl.duration * 0.7}ms ease ${tl.delay}ms`,
-        };
-    };
-
-    const getFullFruitStyle = () => {
-        const tl = timeline.full;
-        // No base transform
-
-        if (phase === 'exit') {
-            return {
-                transform: 'translateY(100%) scale(0.8)',
-                opacity: 0,
-                transition: `transform ${exitDuration}ms cubic-bezier(0.4, 0, 1, 1), opacity ${exitDuration}ms ease`,
-            };
-        }
-        if (phase === 'enter') {
-            return {
-                transform: 'translateY(100%) scale(0.8)',
-                opacity: 0,
-                transition: 'none',
-            };
-        }
-        return {
-            transform: 'translateY(0) scale(1)',
-            opacity: 1,
-            transition: `transform ${tl.duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${tl.delay}ms, opacity ${tl.duration * 0.7}ms ease ${tl.delay}ms`,
-        };
-    };
-
-    const getHalfFruitStyle = () => {
-        const tl = timeline.half;
-        // No base transform
-
-        if (phase === 'exit') {
-            return {
-                transform: 'translateX(50%) rotate(-90deg)',
-                opacity: 0,
-                transition: `transform ${exitDuration}ms cubic-bezier(0.4, 0, 1, 1), opacity ${exitDuration}ms ease`,
-            };
-        }
-        if (phase === 'enter') {
-            return {
-                transform: 'translateX(50%) rotate(-90deg)',
-                opacity: 0,
-                transition: 'none',
-            };
-        }
-        return {
-            transform: 'translateX(0) rotate(0deg)',
-            opacity: 1,
-            transition: `transform ${tl.duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${tl.delay}ms, opacity ${tl.duration * 0.7}ms ease ${tl.delay}ms`,
-        };
-    };
-
+    // --- Splash Logic ---
     const splashStyle = (() => {
         const tl = timeline.splash;
-        if (phase === 'exit') return { transform: 'translateX(-50%) scale(0)', opacity: 0, transition: `all ${exitDuration}ms ease` };
-        if (phase === 'enter') return { transform: 'translateX(-50%) scale(0)', opacity: 0, transition: 'none' };
+        if (phase === 'exit') return { transform: 'translateX(-50%) scale(0.8)', opacity: 0, transition: `all ${exitDuration}ms ease` };
+        if (phase === 'enter') return { transform: 'translateX(-50%) scale(0.5)', opacity: 0, transition: 'none' };
+
+        // Pulse/Enter
         return {
-            transform: 'translateX(-50%) scale(1)',
-            opacity: 1,
+            transform: 'translateX(-50%) scale(1.2)',
+            opacity: 0.6,
             transition: `transform ${tl.duration}ms cubic-bezier(0.16, 1, 0.3, 1) ${tl.delay}ms, opacity ${tl.duration}ms ease ${tl.delay}ms`,
         };
     })();
@@ -137,42 +69,63 @@ export default function ProductStage({ fruit, phase }) {
 
     return (
         <div className="product-stage">
-            <div className="stage__splash" style={splashStyle}>
-                <div className="stage__splash-burst" />
+
+            {/* COMPOSITION CONTAINER */}
+            <div className="product-composition">
+
+                {/* SPLASH (Behind) */}
+                <div className="stage__splash" style={splashStyle}>
+                    <div className="stage__splash-burst" />
+                </div>
+
+                {/* BOTTLE (Center) - Z:3 */}
+                <div className="stage__layer stage__layer--bottle">
+                    <div
+                        className="stage__animator"
+                        style={getAnimatorStyle('bottle', 'translateY(-120%)')}
+                    >
+                        <img src={assets.bottle} className="stage__img" alt="Bottle" draggable={false} />
+                    </div>
+                </div>
+
+                {/* GLASS (Right) - Z:4 */}
+                <div className="stage__layer stage__layer--glass">
+                    <div
+                        className="stage__animator"
+                        style={getAnimatorStyle('glass', 'translateX(80%)')}
+                    >
+                        <img src={assets.glass} className="stage__img" alt="Glass" draggable={false} />
+                    </div>
+                </div>
+
+                {/* WHOLE FRUIT (Left Base) - Z:5 */}
+                <div className="stage__layer stage__layer--full">
+                    <div
+                        className="stage__animator"
+                        style={getAnimatorStyle('full', 'translateY(100%)')}
+                    >
+                        <img src={assets.full} className="stage__img" alt="Fruit" draggable={false} />
+                    </div>
+                </div>
+
+                {/* HALF FRUIT (Right Base) - Z:5 */}
+                <div className="stage__layer stage__layer--half">
+                    <div
+                        className="stage__animator"
+                        style={getAnimatorStyle('half', 'translateY(100%) rotate(-40deg)')}
+                    >
+                        <img src={assets.half} className="stage__img" alt="Fruit Half" draggable={false} />
+                    </div>
+                </div>
+
             </div>
 
-            <div
-                className={`stage__object stage__bottle ${phase === 'idle' ? 'stage__float' : ''}`}
-                style={getBottleStyle()}
-            >
-                <img src={assets.bottle} alt="Bottle" draggable={false} />
-            </div>
-
-            <div
-                className={`stage__object stage__glass ${phase === 'idle' ? 'stage__float-alt' : ''}`}
-                style={getGlassStyle()}
-            >
-                <img src={assets.glass} alt="Glass" draggable={false} />
-            </div>
-
-            <div
-                className={`stage__object stage__fruit-full ${phase === 'idle' ? 'stage__float-slow' : ''}`}
-                style={getFullFruitStyle()}
-            >
-                <img src={assets.full} alt="Fruit" draggable={false} />
-            </div>
-
-            <div
-                className={`stage__object stage__fruit-half ${phase === 'idle' ? 'stage__float-alt' : ''}`}
-                style={getHalfFruitStyle()}
-            >
-                <img src={assets.half} alt="Fruit half" draggable={false} />
-            </div>
-
+            {/* TAGLINE */}
             <div className="stage__tagline" style={taglineStyle}>
                 <p className="stage__tagline-text">{fruit.tagline}</p>
                 <div className="stage__tagline-line" />
             </div>
+
         </div>
     );
 }

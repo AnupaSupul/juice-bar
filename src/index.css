@@ -1,5 +1,5 @@
 /* ======================================================
-   ANTIGRAVITY – Pure Transparent Render System
+   ANTIGRAVITY – Final Cinematic Hero Composition
    ====================================================== */
 
 /* ---------- Reset ---------- */
@@ -14,11 +14,11 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   color: #fff;
   overflow-x: hidden;
   background: #111;
@@ -30,7 +30,254 @@ body {
   width: 100%;
 }
 
-/* ---------- Scroll Sentinels ---------- */
+/* ============================================
+   PREMIUM NAVBAR
+   ============================================ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5%;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Initial State: Transparent */
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(0px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0);
+}
+
+/* SCROLLED STATE: Glassmorphism */
+.navbar--scrolled {
+  height: 80px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+  /* Active Theme Glow Border */
+  border-bottom-color: var(--theme-color, rgba(255, 255, 255, 0.1));
+}
+
+.navbar__container {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* LOGO */
+.navbar__logo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.navbar__logo:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* NAV LINKS */
+.navbar__links {
+  display: flex;
+  gap: 3rem;
+  height: 100%;
+  align-items: center;
+}
+
+.nav-item {
+  position: relative;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+  color: #fff;
+}
+
+/* Underline Animation */
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0%;
+  height: 2px;
+  background: var(--theme-color, #fff);
+  transition: width 0.3s ease, left 0.3s ease;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px var(--theme-color, rgba(255, 255, 255, 0.5));
+}
+
+.nav-item:hover::after {
+  width: 100%;
+}
+
+/* DROPDOWN */
+.has-dropdown {
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(24px);
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 200px;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.has-dropdown:hover .nav-dropdown {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.dropdown-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* BUY BUTTON */
+.btn-buy {
+  position: relative;
+  background: linear-gradient(135deg, #ff7a00, #ffb300);
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(255, 140, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-buy:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(255, 140, 0, 0.5);
+}
+
+/* Light Sweep Animation */
+.btn-buy::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-buy:hover::before {
+  left: 100%;
+  transition: left 0.6s ease;
+}
+
+/* MOBILE TOGGLE */
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #fff;
+  margin: 5px 0;
+  transition: 0.3s;
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-100%);
+  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.mobile-menu.open {
+  transform: translateY(0);
+}
+
+.mobile-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: center;
+}
+
+.mobile-links a {
+  color: #fff;
+  font-size: 2rem;
+  text-decoration: none;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+/* Scroll Sentinels & App */
 .sections {
   position: relative;
   z-index: 20;
@@ -42,7 +289,6 @@ body {
   width: 100%;
 }
 
-/* ---------- Scroll Indicator ---------- */
 .scroll-indicator {
   position: fixed;
   bottom: 2rem;
@@ -115,7 +361,7 @@ body {
 .background {
   position: fixed;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
   overflow: hidden;
   background: none;
 }
@@ -127,65 +373,108 @@ body {
   will-change: background;
 }
 
-.background__glow {
+.bg-glow {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
-  transition: background 1.2s ease;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.25) 15%,
+      rgba(255, 255, 255, 0.12) 30%,
+      rgba(255, 255, 255, 0.05) 45%,
+      transparent 65%);
+  z-index: 0;
   pointer-events: none;
-  filter: blur(80px);
+  transition: background 1.2s ease;
 }
 
-.background__text-container {
+.bg-fruit-stack {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: flex-start;
-  padding-top: 10vh;
-  /* Position slightly higher */
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  pointer-events: none;
   overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
 }
 
-/* 3D TEXT EFFECT - Refined & Translucent White */
-.background__fruit-name {
-  font-size: 25vw;
-  /* Adjusted to fit better but still huge */
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  line-height: 0.8;
-  color: rgba(255, 255, 255, 0.25);
-  /* Little white fill */
-  text-transform: uppercase;
-  user-select: none;
+.fruit-name-main,
+.fruit-name-top,
+.fruit-name-bottom {
+  text-align: center;
   white-space: nowrap;
+  user-select: none;
+  line-height: 1;
+  transition: opacity 0.7s ease, color 0.7s ease;
+}
 
-  /* 3D Extrusion Effect - Clean & Sharp */
-  text-shadow:
-    1px 1px 0 rgba(255, 255, 255, 0.1),
-    2px 2px 0 rgba(255, 255, 255, 0.08),
-    3px 3px 0 rgba(255, 255, 255, 0.06),
-    4px 4px 0 rgba(255, 255, 255, 0.04),
-    5px 5px 0 rgba(255, 255, 255, 0.02),
-    0 10px 30px rgba(0, 0, 0, 0.15);
+.fruit-name-top {
+  position: absolute;
+  top: 5%;
+  font-size: 15vw;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.10);
+  filter: blur(2px);
+  animation: floatTop 8s ease-in-out infinite;
+}
 
-  /* Removed mix-blend-mode for cleaner white */
-  opacity: 1;
+@keyframes floatTop {
 
-  transition:
-    opacity 0.7s cubic-bezier(0.76, 0, 0.24, 1),
-    filter 0.7s cubic-bezier(0.76, 0, 0.24, 1),
-    transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
-  will-change: opacity, filter, transform;
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.fruit-name-main {
+  font-size: 15vw;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.32);
+  animation: mainFloat 6s ease-in-out infinite;
+}
+
+@keyframes mainFloat {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.fruit-name-bottom {
+  position: absolute;
+  bottom: 5%;
+  font-size: 15vw;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.10);
+  filter: blur(2px);
+  animation: floatBottom 8s ease-in-out infinite;
+}
+
+@keyframes floatBottom {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(20px);
+  }
 }
 
 /* ============================================
-   PRODUCT STAGE – STRICT NO-BACKGROUND RENDERING
+   PRODUCT STAGE – PREMIUM POSTER COMPOSITION
    ============================================ */
 .product-stage {
   position: fixed;
@@ -198,78 +487,82 @@ body {
   background: transparent !important;
 }
 
-/* Common object styles */
-.stage__object {
+.product-composition {
   position: absolute;
-  background: none !important;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  height: 82vh;
+  width: auto;
+  min-width: 60vh;
+  filter: drop-shadow(0px 60px 80px rgba(0, 0, 0, 0.35));
+}
+
+.stage__layer {
+  position: absolute;
+  will-change: transform;
+}
+
+.stage__animator {
+  width: 100%;
+  height: 100%;
   will-change: transform, opacity;
 }
 
-.stage__object img {
+.stage__img {
   display: block;
-  width: auto;
-  height: 100%;
   object-fit: contain;
   background: none !important;
-  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.4));
+  width: auto;
+  height: 100%;
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.2));
 }
 
-/* --- Bottle ---
-   Center: 42%
-*/
-.stage__bottle {
-  height: 68vh;
-  bottom: 8vh;
-  left: 42%;
+.stage__layer--bottle {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 82vh;
   transform: translateX(-50%);
-  transform-origin: center bottom;
-  z-index: 2;
-}
-
-/* --- Glass ---
-   Right: 58%
-*/
-.stage__glass {
-  height: 48vh;
-  bottom: 8vh;
-  left: 58%;
-  transform: translateX(-50%);
-  transform-origin: center bottom;
-  z-index: 3;
-}
-
-/* --- Whole Fruit ---
-   Left: 20%
-*/
-.stage__fruit-full {
-  height: 30vh;
-  bottom: 6vh;
-  left: 20%;
-  transform-origin: center bottom;
   z-index: 4;
 }
 
-/* --- Half Fruit ---
-   Front Right: 68%
-*/
-.stage__fruit-half {
-  height: 25vh;
-  bottom: 5vh;
-  left: 68%;
-  transform-origin: center center;
+.stage__layer--full {
+  position: absolute;
+  bottom: 0;
+  left: 34%;
+  height: 46vh;
+  transform: translateX(-50%);
   z-index: 5;
 }
 
-/* ---------- Splash Effect ---------- */
+.stage__layer--glass {
+  position: absolute;
+  bottom: 0;
+  left: 62%;
+  height: 56vh;
+  transform: translateX(-50%);
+  z-index: 6;
+}
+
+.stage__layer--half {
+  position: absolute;
+  bottom: 0;
+  left: 46%;
+  height: 40vh;
+  transform: translateX(-50%) rotate(-12deg);
+  transform-origin: center bottom;
+  z-index: 7;
+}
+
 .stage__splash {
   position: absolute;
-  bottom: 15vh;
+  bottom: 15%;
   left: 50%;
-  width: 45vw;
-  height: 45vw;
+  width: 100%;
+  height: 70%;
   transform: translateX(-50%);
   z-index: 1;
-  /* Behind bottle */
   pointer-events: none;
   background: none !important;
   will-change: transform, opacity;
@@ -278,153 +571,67 @@ body {
 .stage__splash-burst {
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at center,
-      rgba(255, 255, 255, 0.3) 0%,
-      rgba(255, 255, 255, 0.1) 40%,
-      transparent 70%);
-  filter: blur(30px);
-  animation: splash-pulse 4s ease-in-out infinite;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 35%, transparent 65%);
+  filter: blur(45px);
 }
 
-@keyframes splash-pulse {
-
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.6;
-  }
-
-  50% {
-    transform: scale(1.2);
-    opacity: 0.8;
-  }
-}
-
-/* ---------- Floating Idle Animations ---------- */
-.stage__bottle.stage__float {
-  animation: float-bottle 4s ease-in-out infinite;
-}
-
-@keyframes float-bottle {
-
-  0%,
-  100% {
-    transform: translateX(-50%) translate3d(0, 0, 0);
-  }
-
-  50% {
-    transform: translateX(-50%) translate3d(0, -12px, 0);
-  }
-}
-
-.stage__glass.stage__float-alt {
-  animation: float-glass 3.5s ease-in-out infinite;
-}
-
-@keyframes float-glass {
-
-  0%,
-  100% {
-    transform: translateX(-50%) translate3d(0, 0, 0);
-  }
-
-  50% {
-    transform: translateX(-50%) translate3d(0, -8px, 0);
-  }
-}
-
-.stage__fruit-full.stage__float-slow {
-  animation: float-full 5s ease-in-out infinite;
-}
-
-@keyframes float-full {
-
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  50% {
-    transform: translate3d(0, -6px, 0);
-  }
-}
-
-.stage__fruit-half.stage__float-alt {
-  animation: float-half 4s ease-in-out infinite;
-}
-
-@keyframes float-half {
-
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  50% {
-    transform: translate3d(0, -7px, 0);
-  }
-}
-
-
-/* ---------- Tagline ---------- */
 .stage__tagline {
   position: absolute;
-  bottom: 2vh;
+  bottom: 3vh;
   left: 0;
   width: 100%;
   text-align: center;
-  z-index: 10;
+  z-index: 20;
 }
 
 .stage__tagline-text {
-  font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
   font-weight: 300;
-  letter-spacing: 0.2em;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.25em;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
   text-transform: uppercase;
 }
 
 .stage__tagline-line {
-  width: 50px;
+  width: 40px;
   height: 1px;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.4);
   margin: 0.8rem auto 0;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
 @media (max-width: 768px) {
-
-  /* Tighter cluster for mobile */
-  .stage__bottle {
+  .stage__layer--bottle {
+    left: 50%;
     height: 60vh;
-    left: 45%;
-    bottom: 12vh;
   }
 
-  .stage__glass {
-    height: 40vh;
-    left: 65%;
-    bottom: 12vh;
+  .stage__layer--glass {
+    left: 60%;
+    height: 42vh;
   }
 
-  .stage__fruit-full {
-    height: 22vh;
-    left: 10%;
-    bottom: 10vh;
+  .stage__layer--full {
+    left: 30%;
+    height: 32vh;
   }
 
-  .stage__fruit-half {
-    height: 18vh;
-    left: 75%;
-    bottom: 10vh;
+  .stage__layer--half {
+    left: 50%;
+    height: 28vh;
   }
 
-  .background__fruit-name {
-    font-size: 80vw;
-    /* Even bigger on mobile to crop nicely */
-    padding-top: 15vh;
+  .fruit-name-main,
+  .fruit-name-top,
+  .fruit-name-bottom {
+    font-size: 20vw;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-toggle {
+    display: block;
   }
 }
