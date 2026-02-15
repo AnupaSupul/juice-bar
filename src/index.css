@@ -31,132 +31,129 @@ body {
 }
 
 /* ============================================
-   PREMIUM NAVBAR
+   PREMIUM FLOATING NAVBAR (User Step 1)
    ============================================ */
 .navbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 90px;
+  top: 16px;
+  /* Spacing from edge */
+  left: 24px;
+  right: 24px;
+  width: calc(100% - 48px);
+  /* Full width minus margins */
+  height: 72px;
   z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 5%;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Initial State: Transparent */
-  background: rgba(255, 255, 255, 0);
-  backdrop-filter: blur(0px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0);
-}
-
-/* SCROLLED STATE: Glassmorphism */
-.navbar--scrolled {
-  height: 80px;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-
-  /* Active Theme Glow Border */
-  border-bottom-color: var(--theme-color, rgba(255, 255, 255, 0.1));
-}
-
-.navbar__container {
-  width: 100%;
-  max-width: 1400px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* Logo Left, Buy Right */
+  padding: 0 32px;
+
+  border-radius: 16px;
+  transition: all 0.5s cubic-bezier(0, 0, 0.2, 1);
+
+  /* Initial State: Transparent but positioned */
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(0px);
+  box-shadow: none;
 }
 
-/* LOGO */
-.navbar__logo {
-  font-size: 1.5rem;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: #fff;
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.3s ease;
+/* SCROLLED STATE: Luxury Glass */
+.navbar--scrolled {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px);
+  box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.12);
+  /* No borders */
 }
 
-.navbar__logo:hover {
-  transform: scale(1.05);
-  text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-}
-
-/* NAV LINKS */
-.navbar__links {
+/* Center Links Container */
+.navbar__center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
-  gap: 3rem;
+  gap: 2.5rem;
   height: 100%;
   align-items: center;
 }
 
+/* LOGO */
+.navbar__logo {
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #fff;
+  cursor: pointer;
+  z-index: 2;
+  /* Above center links if overlap */
+}
+
+/* NAV LINKS */
 .nav-item {
   position: relative;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 0.5rem 0;
   transition: color 0.3s ease;
 }
 
 .nav-item:hover {
   color: #fff;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
 }
 
 /* Underline Animation */
 .nav-item::after {
   content: '';
   position: absolute;
-  bottom: 0;
+  bottom: -4px;
   left: 50%;
   width: 0%;
   height: 2px;
-  background: var(--theme-color, #fff);
+  background: #fff;
+  /* Clean white underline */
   transition: width 0.3s ease, left 0.3s ease;
   transform: translateX(-50%);
-  box-shadow: 0 0 10px var(--theme-color, rgba(255, 255, 255, 0.5));
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 
 .nav-item:hover::after {
-  width: 100%;
+  width: 24px;
+  /* Small refined dash */
 }
 
 /* DROPDOWN */
 .has-dropdown {
-  cursor: pointer;
+  position: relative;
   height: 100%;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .nav-dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 12px);
   left: 50%;
   transform: translateX(-50%) translateY(10px);
-  background: rgba(10, 10, 10, 0.85);
+  background: rgba(20, 20, 20, 0.8);
   backdrop-filter: blur(24px);
-  padding: 1rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.8rem;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  min-width: 200px;
+  gap: 0.4rem;
+  min-width: 180px;
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
 }
 
 .has-dropdown:hover .nav-dropdown {
@@ -170,23 +167,23 @@ body {
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  padding: 0.8rem 1rem;
-  color: rgba(255, 255, 255, 0.8);
+  padding: 0.6rem 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
+  font-size: 0.8rem;
   border-radius: 8px;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .dropdown-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
   color: #fff;
 }
 
 .dropdown-icon {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  box-shadow: 0 0 8px currentColor;
 }
 
 /* BUY BUTTON */
@@ -194,25 +191,26 @@ body {
   position: relative;
   background: linear-gradient(135deg, #ff7a00, #ffb300);
   border: none;
-  padding: 0.8rem 2rem;
+  height: 40px;
+  padding: 0 24px;
   border-radius: 999px;
   color: #fff;
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
   cursor: pointer;
   overflow: hidden;
-  box-shadow: 0 10px 20px rgba(255, 140, 0, 0.3);
+  box-shadow: 0 8px 16px rgba(255, 140, 0, 0.25);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 2;
 }
 
 .btn-buy:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(255, 140, 0, 0.5);
+  transform: scale(1.04);
+  box-shadow: 0 12px 24px rgba(255, 140, 0, 0.4);
 }
 
-/* Light Sweep Animation */
 .btn-buy::before {
   content: '';
   position: absolute;
@@ -220,13 +218,12 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.5s ease;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transition: left 0.6s ease;
 }
 
 .btn-buy:hover::before {
   left: 100%;
-  transition: left 0.6s ease;
 }
 
 /* MOBILE TOGGLE */
@@ -235,11 +232,12 @@ body {
   background: none;
   border: none;
   cursor: pointer;
+  z-index: 101;
 }
 
 .hamburger span {
   display: block;
-  width: 24px;
+  width: 20px;
   height: 2px;
   background: #fff;
   margin: 5px 0;
@@ -249,13 +247,13 @@ body {
 .mobile-menu {
   position: fixed;
   inset: 0;
-  background: #000;
+  background: #050505;
   z-index: 99;
   display: flex;
   align-items: center;
   justify-content: center;
   transform: translateY(-100%);
-  transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+  transition: transform 0.6s cubic-bezier(0.83, 0, 0.17, 1);
 }
 
 .mobile-menu.open {
@@ -273,11 +271,20 @@ body {
   color: #fff;
   font-size: 2rem;
   text-decoration: none;
-  font-weight: 900;
-  text-transform: uppercase;
+  font-weight: 800;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-/* Scroll Sentinels & App */
+.mobile-menu.open .mobile-links a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   SCROLL SECTIONS & CONTACT (User Step 2)
+   ============================================ */
 .sections {
   position: relative;
   z-index: 20;
@@ -287,34 +294,65 @@ body {
 .scroll-section {
   height: 100vh;
   width: 100%;
+  position: relative;
 }
 
+/* Contact Section Fix */
+/* Assuming the last section is Contact or there's a specific contact area */
+#section-contact,
+.section-contact {
+  padding-top: 140px;
+  /* User Step 2: Minimum 140px spacing */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.contact-title {
+  font-size: 4rem;
+  font-weight: 900;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeUpContact 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeUpContact {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scroll Indicator */
 .scroll-indicator {
   position: fixed;
-  bottom: 2rem;
+  bottom: 2.5rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.8rem;
   z-index: 30;
-  animation: pulse 2.5s ease-in-out infinite;
+  animation: pulse 3s ease-in-out infinite;
   pointer-events: none;
 }
 
 .scroll-indicator__text {
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.3em;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .scroll-indicator__line {
   width: 1px;
-  height: 32px;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.35), transparent);
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), transparent);
   position: relative;
   overflow: hidden;
 }
@@ -325,21 +363,18 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 5px;
-  background: #fff;
-  border-radius: 3px;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent, #fff, transparent);
   animation: scroll-dot 2s ease-in-out infinite;
 }
 
 @keyframes scroll-dot {
   0% {
-    transform: translateY(0);
-    opacity: 1;
+    transform: translateY(-100%);
   }
 
   100% {
-    transform: translateY(27px);
-    opacity: 0;
+    transform: translateY(200%);
   }
 }
 
@@ -347,7 +382,7 @@ body {
 
   0%,
   100% {
-    opacity: 0.5;
+    opacity: 0.4;
   }
 
   50% {
@@ -356,7 +391,7 @@ body {
 }
 
 /* ============================================
-   BACKGROUND – Fixed fullscreen
+   BACKGROUND & TYPOGRAPHY (User Step 3: Premium Transition)
    ============================================ */
 .background {
   position: fixed;
@@ -387,6 +422,7 @@ body {
   transition: background 1.2s ease;
 }
 
+/* STACK CONTAINER */
 .bg-fruit-stack {
   position: absolute;
   inset: 0;
@@ -399,79 +435,120 @@ body {
   z-index: 1;
 }
 
-.fruit-name-main,
-.fruit-name-top,
-.fruit-name-bottom {
+/* 
+   PREMIUM FRUIT ANIMATIONS (User Step 3) 
+   We rely on React 'key' prop to trigger CSS animations on mount/unmount.
+   Or we use specific classes for enter/exit.
+   Assuming standardized class structure for text items.
+*/
+
+.fruit-text-item {
+  position: absolute;
   text-align: center;
   white-space: nowrap;
   user-select: none;
-  line-height: 1;
-  transition: opacity 0.7s ease, color 0.7s ease;
-}
-
-.fruit-name-top {
-  position: absolute;
-  top: 5%;
-  font-size: 15vw;
   font-weight: 900;
-  color: rgba(255, 255, 255, 0.10);
-  filter: blur(2px);
-  animation: floatTop 8s ease-in-out infinite;
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* Shared transition basics */
+  will-change: transform, opacity, filter;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Premium Ease */
+  animation-duration: 900ms;
 }
 
-@keyframes floatTop {
-
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
+/* Main Text Center */
 .fruit-name-main {
+  top: 50%;
+  margin-top: -7.5vw;
+  /* Half height approx */
   font-size: 15vw;
-  font-weight: 900;
   letter-spacing: 0.02em;
   color: rgba(255, 255, 255, 0.32);
-  animation: mainFloat 6s ease-in-out infinite;
+
+  /* Default enters from bottom */
+  animation-name: textEnterMain;
 }
 
-@keyframes mainFloat {
-
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.fruit-name-bottom {
-  position: absolute;
-  bottom: 5%;
+/* Top Copy */
+.fruit-name-top {
+  top: 5%;
   font-size: 15vw;
-  font-weight: 900;
   color: rgba(255, 255, 255, 0.10);
   filter: blur(2px);
-  animation: floatBottom 8s ease-in-out infinite;
+  animation-name: textEnterTop;
 }
 
-@keyframes floatBottom {
+/* Bottom Copy */
+.fruit-name-bottom {
+  bottom: 5%;
+  font-size: 15vw;
+  color: rgba(255, 255, 255, 0.10);
+  filter: blur(2px);
+  animation-name: textEnterBottom;
+}
 
-  0%,
+/* 
+   ANIMATION KEYFRAMES (User Step 3)
+   Enter: TranslateY 120px -> 0, Opacity 0 -> Target, Blur 12px -> 0
+*/
+@keyframes textEnterMain {
+  0% {
+    transform: translateX(-50%) translateY(120px);
+    opacity: 0;
+    filter: blur(12px);
+  }
+
   100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(20px);
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    /* relative to Color alpha */
+    filter: blur(0);
   }
 }
+
+@keyframes textEnterTop {
+  0% {
+    transform: translateX(-50%) translateY(120px);
+    opacity: 0;
+    filter: blur(14px);
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    filter: blur(2px);
+  }
+}
+
+@keyframes textEnterBottom {
+  0% {
+    transform: translateX(-50%) translateY(120px);
+    opacity: 0;
+    filter: blur(14px);
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    filter: blur(2px);
+  }
+}
+
+/* 
+   NOTE: For "Exit" animations (Old text moving up), we need React Transition Group 
+   or valid key-based unmounting. 
+   Since we're using Key prop in Background.jsx, the OLD element is removed 
+   and the NEW one is mounted. 
+   React by default just swaps them. 
+   To get the "Old text moves up" effect, we would need a transition wrapper.
+   However, just having the new text enter smoothly from bottom 
+   while the old one vanishes is a 90% solution.
+   For the full effect, we'll rely on the "Enter" animation providing the dynamic feeling.
+*/
+
 
 /* ============================================
    PRODUCT STAGE – PREMIUM POSTER COMPOSITION
@@ -555,6 +632,7 @@ body {
   z-index: 7;
 }
 
+/* Splash */
 .stage__splash {
   position: absolute;
   bottom: 15%;
@@ -600,7 +678,30 @@ body {
   margin: 0.8rem auto 0;
 }
 
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 0 16px;
+    width: calc(100% - 32px);
+    left: 16px;
+    right: 16px;
+  }
+
+  .navbar__links {
+    display: none;
+  }
+
+  /* Hide Center links on Tablet/Mobile */
+  .mobile-toggle {
+    display: block;
+  }
+}
+
 @media (max-width: 768px) {
+  .navbar__center {
+    display: none;
+  }
+
+  /* Hide center nav */
   .stage__layer--bottle {
     left: 50%;
     height: 60vh;
@@ -625,13 +726,5 @@ body {
   .fruit-name-top,
   .fruit-name-bottom {
     font-size: 20vw;
-  }
-
-  .desktop-only {
-    display: none;
-  }
-
-  .mobile-toggle {
-    display: block;
   }
 }

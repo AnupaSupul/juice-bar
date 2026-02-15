@@ -7,44 +7,42 @@ export default function Navbar({ activeIndex }) {
 
     // Current active fruit for theming
     const activeFruit = fruits[activeIndex] || fruits[0];
-    const themeColor = activeFruit.bgColor; // Use the fruit's theme color
+    const themeColor = activeFruit.bgColor;
 
-    // Scroll listener for glass effect
+    // Scroll listener
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
+            setScrolled(window.scrollY > 20); // Sensitive scroll
         };
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     return (
-        <nav
-            className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}
-            style={{
-                '--theme-color': themeColor,
-                '--theme-glow': activeFruit.gradient
-            }}
-        >
-            <div className="navbar__container">
-
+        <>
+            <nav
+                className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}
+                style={{ '--theme-color': themeColor }}
+            >
                 {/* LEFT: LOGO */}
                 <div className="navbar__logo">
-                    <span className="logo-text">FRUITIFY</span>
-                    <div className="logo-glow" />
+                    FRUITIFY
                 </div>
 
-                {/* CENTER: DESKTOP NAV */}
-                <div className="navbar__links desktop-only">
+                {/* CENTER: NAV LINKS */}
+                <div className="navbar__center">
                     <a href="#" className="nav-item">Home</a>
 
                     <div className="nav-item has-dropdown">
-                        <span className="nav-text">Flavors</span>
+                        <span>Flavors</span>
                         <div className="nav-dropdown">
                             {fruits.map((fruit, i) => (
                                 <a key={fruit.id} href={`#section-${i}`} className="dropdown-item">
-                                    <span className="dropdown-icon" style={{ backgroundColor: fruit.bgColor }}></span>
-                                    <span className="dropdown-text">{fruit.name}</span>
+                                    <span
+                                        className="dropdown-icon"
+                                        style={{ backgroundColor: fruit.bgColor }}
+                                    />
+                                    {fruit.name}
                                 </a>
                             ))}
                         </div>
@@ -52,36 +50,42 @@ export default function Navbar({ activeIndex }) {
 
                     <a href="#" className="nav-item">Products</a>
                     <a href="#" className="nav-item">Benefits</a>
-                    <a href="#" className="nav-item">Contact</a>
+                    <a href="#section-contact" className="nav-item">Contact</a>
                 </div>
 
-                {/* RIGHT: BUY BUTTON & MOBILE TOGGLE */}
-                <div className="navbar__actions">
+                {/* RIGHT: BUY & TOGGLE */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <button className="btn-buy">
-                        <span>Buy Now</span>
-                        <div className="btn-glow" />
+                        Buy Now
                     </button>
 
                     <button
                         className="mobile-toggle"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        aria-label="Toggle Menu"
                     >
                         <div className={`hamburger ${mobileMenuOpen ? 'open' : ''}`}>
                             <span></span><span></span><span></span>
                         </div>
                     </button>
                 </div>
-            </div>
+            </nav>
 
-            {/* MOBILE MENU */}
+            {/* MOBILE MENU OVERLAY */}
             <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
-                <div className="mobile-links">
+                <nav className="mobile-links">
                     <a href="#" onClick={() => setMobileMenuOpen(false)}>Home</a>
                     <a href="#" onClick={() => setMobileMenuOpen(false)}>Flavors</a>
                     <a href="#" onClick={() => setMobileMenuOpen(false)}>Products</a>
-                    <a href="#" onClick={() => setMobileMenuOpen(false)}>Contact</a>
-                </div>
+                    <a href="#section-contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+                    <button
+                        className="btn-buy"
+                        style={{ marginTop: '2rem', transform: 'scale(1.2)' }}
+                    >
+                        Purchase
+                    </button>
+                </nav>
             </div>
-        </nav>
+        </>
     );
 }

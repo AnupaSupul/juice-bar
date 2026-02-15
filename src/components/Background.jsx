@@ -7,7 +7,6 @@ export default function Background({ fruit }) {
         <div className="background">
             {/* 
          LAYER 0: CINEMATIC GLOW 
-         Fixed radial backlight behind everything
       */}
             <div className="bg-glow" />
 
@@ -21,19 +20,30 @@ export default function Background({ fruit }) {
 
             {/* 
          LAYER 1: FRUIT NAME STACK
-         Stacked layout: Top (Faded) - Main (Sharp) - Bottom (Faded)
-         User Step 1 & 6
+         User Step 3: Premium Animations via key-changing
       */}
             <div className="bg-fruit-stack">
-                <div className="fruit-name-top" key={`top-${fruit.name}`}>
+                {/* Top Copy */}
+                <div
+                    className="fruit-text-item fruit-name-top"
+                    key={`top-${fruit.name}`}
+                >
                     {fruit.name}
                 </div>
 
-                <div className="fruit-name-main" key={`main-${fruit.name}`}>
+                {/* Main Center */}
+                <div
+                    className="fruit-text-item fruit-name-main"
+                    key={`main-${fruit.name}`}
+                >
                     {fruit.name}
                 </div>
 
-                <div className="fruit-name-bottom" key={`bottom-${fruit.name}`}>
+                {/* Bottom Copy */}
+                <div
+                    className="fruit-text-item fruit-name-bottom"
+                    key={`bottom-${fruit.name}`}
+                >
                     {fruit.name}
                 </div>
             </div>
